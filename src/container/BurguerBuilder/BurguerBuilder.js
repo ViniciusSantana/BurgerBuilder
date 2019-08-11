@@ -9,17 +9,10 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions';
 
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese:0.4,
-    meat:1.3,
-    bacon:0.7
-}
 
 class BurguerBuilder extends Component{
     
     state = {
-        totalPrice: 4,
         purchaseable: false,
         purchasing: false,
         loading: false,
@@ -50,34 +43,6 @@ class BurguerBuilder extends Component{
         this.setState({purchaseable: sum>0})
     }
 
-    addIngredientHandler = (type) =>{
-        const oldCount = this.state.ingredients[type];
-        const updatedCount = oldCount +1;
-        const updateIngredients = {...this.state.ingredients};
-        updateIngredients[type] = updatedCount;
-
-        const priceAddition = INGREDIENT_PRICES[type];
-        const oldPrice = this.state.totalPrice;
-        const newPrice = oldPrice+priceAddition;
-
-        this.setState({totalPrice:newPrice, ingredients:updateIngredients});
-        this.updatePurchaseState(updateIngredients);
-    }
-    removeIngredientHandler = (type) =>{
-        const oldCount = this.state.ingredients[type];
-        if(oldCount >0){
-            const updatedCount = oldCount -1;
-            const updateIngredients = {...this.state.ingredients};
-            updateIngredients[type] = updatedCount;
-    
-            const ingredientPrice = INGREDIENT_PRICES[type];
-            const oldPrice = this.state.totalPrice;
-            const newPrice = oldPrice-ingredientPrice;
-    
-            this.setState({totalPrice:newPrice, ingredients:updateIngredients});
-            this.updatePurchaseState(updateIngredients);
-        }
-    }
     purchaseCancelHandler = ()=>{
         this.setState({purchasing: false});
     }
@@ -86,7 +51,7 @@ class BurguerBuilder extends Component{
         for(let i in this.state.ingredients){
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        queryParams.push('price='+this.state.totalPrice);
+        queryParams.push('price='+this.props.price);
         const queryString = queryParams.join('&')
         this.props.history.push(
             {
@@ -110,7 +75,7 @@ class BurguerBuilder extends Component{
             orderSummary = <OrderSummary 
                                 purchaseCancelled={this.purchaseCancelHandler}
                                 purchaseContinued={this.purchaseContinueHandler}
-                                price = {this.state.totalPrice}
+                                price = {this.props.price}
                                 ingredients ={this.props.ings}
                             />;
             
@@ -121,7 +86,7 @@ class BurguerBuilder extends Component{
                         ingredientAdded = {this.props.onIngredientAdded}
                         ingredientRemoved = {this.props.onIngredientRemoved}
                         disabled={disableInfo}
-                        price={this.state.totalPrice}
+                        price={this.props.price}
                         purchaseable={this.state.purchaseable}
                         ordered = {this.purchaseHandler}
                         />
@@ -145,7 +110,8 @@ class BurguerBuilder extends Component{
 }
 
 const mapStateToProps = (state) => ({
-    ings: state.ingredients
+    ings: state.ingredients,
+    price: state.totalPrice
 })
 
 const mapDispatchToProps = dispatch=> {
