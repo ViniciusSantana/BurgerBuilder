@@ -19,7 +19,7 @@ class App extends Component {
     }
 
     render() {
-        const routes = (
+        let routes = (
             <Switch>
                 <Route path="/auth" exact component={Auth} />
                 <Route path="/" exact component={BurgerBUilder} />
