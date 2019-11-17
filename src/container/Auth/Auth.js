@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -40,6 +41,14 @@ class Auth extends Component {
             },
         },
         isSignUp: true,
+    }
+
+    componentDidMount() {
+        const { buildingBurger, onSetAuthRedirectPath } = this.props;
+
+        if (!buildingBurger) {
+            onSetAuthRedirectPath();
+        }
     }
 
     switchAuthModeHandler = () => {
@@ -144,6 +153,10 @@ class Auth extends Component {
 
 
     render() {
+        const { isAuth, authRedirectPath } = this.props;
+
+        if (isAuth) { return <Redirect to={authRedirectPath} />; }
+
         const form = this.createForm();
         return (
             <div className={style.Auth}>
@@ -156,10 +169,14 @@ class Auth extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
     onAuth: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
 });
 
 const mapStateToProps = (state) => ({
     loading: state.auth.loading,
     error: state.auth.error,
+    isAuth: state.auth.token !== null,
+    buildingBurger: state.burgerBuilder.building,
+    authRedirectPath: state.auth.authRedirectPath,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
