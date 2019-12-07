@@ -31,9 +31,9 @@ class App extends Component {
         if (isAuthenticated) {
             routes = (
                 <Switch>
-                    <Route path="/checkout" component={Checkout} />
                     <Route path="/orders" exact component={Orders} />
                     <Route path="/logout" exact component={Logout} />
+                    <Route path="/checkout" component={Checkout} />
                     <Route path="/" exact component={BurgerBUilder} />
                 </Switch>
             );

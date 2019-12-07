@@ -51,9 +51,9 @@ class BurguerBuilder extends Component {
 
     render() {
         const {
-            ings, error, price, purchasing, onIngredientAdded, onIngredientRemoved, isAuth,
+            ings, error, price, onIngredientAdded, onIngredientRemoved, isAuth,
         } = this.props;
-
+        const { purchasing } = this.state;
         const disableInfo = { ...ings };
         for (const key in disableInfo) {
             disableInfo[key] = disableInfo[key] <= 0;

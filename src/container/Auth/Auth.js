@@ -153,9 +153,16 @@ class Auth extends Component {
 
 
     render() {
-        const { isAuth, authRedirectPath } = this.props;
-
-        if (isAuth) { return <Redirect to={authRedirectPath} />; }
+        const { isAuth, authRedirectPath, token } = this.props;
+        console.log('Auth.render()');
+        console.log(`isAuth = ${isAuth}`);
+        console.log(`token = ${token}`);
+        console.log('props =');
+        console.log(this.props);
+        if (isAuth) {
+            console.log(`redirecting to ${authRedirectPath}`);
+            return <Redirect to={authRedirectPath} />;
+        }
 
         const form = this.createForm();
         return (
@@ -173,9 +180,12 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
+    authState: state.auth,
+    burgerBuilderState: state.burgerBuilder,
     loading: state.auth.loading,
     error: state.auth.error,
     isAuth: state.auth.token !== null,
+    token: state.auth.token,
     buildingBurger: state.burgerBuilder.building,
     authRedirectPath: state.auth.authRedirectPath,
 });
