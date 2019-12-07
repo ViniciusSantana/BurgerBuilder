@@ -13,7 +13,7 @@ const Logout = lazy(() => import('./container/Auth/Logout/Logout'));
 const Checkout = lazy(() => import('./container/Checkout/Checkout'));
 const Orders = lazy(() => import('./container/Orders/Orders'));
 
-class App extends Component {
+export class App extends Component {
     componentDidMount() {
         const { onTryAutoSignIn } = this.props;
 
