@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Burguer from '../../components/Burger/Burger';
+import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
@@ -9,7 +9,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../store/actions/index';
 
-class BurguerBuilder extends Component {
+class BurgerBuilder extends Component {
     state = {
         purchasing: false,
     }
@@ -74,13 +74,13 @@ class BurguerBuilder extends Component {
 
             burger = (
                 <>
-                    <Burguer ingredients={ings} />
+                    <Burger ingredients={ings} />
                     <BuildControls
                         ingredientAdded={onIngredientAdded}
                         ingredientRemoved={onIngredientRemoved}
                         disabled={disableInfo}
                         price={price}
-                        purchaseable={this.updatePurchaseState(ings)}
+                        purchasable={this.updatePurchaseState(ings)}
                         isAuth={isAuth}
                         ordered={this.purchaseHandler}
                     />
@@ -114,4 +114,4 @@ const mapDispatchToProps = (dispatch) => ({
     onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurguerBuilder, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

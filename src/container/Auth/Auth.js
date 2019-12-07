@@ -153,11 +153,7 @@ class Auth extends Component {
 
 
     render() {
-        const { isAuth, authRedirectPath, token } = this.props;
-        console.log('Auth.render()');
-        console.log(`isAuth = ${isAuth}`);
-        console.log(`token = ${token}`);
-        console.log('props =');
+        const { isAuth, authRedirectPath } = this.props;
         console.log(this.props);
         if (isAuth) {
             console.log(`redirecting to ${authRedirectPath}`);

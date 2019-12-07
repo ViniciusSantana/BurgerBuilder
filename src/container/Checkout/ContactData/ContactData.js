@@ -118,7 +118,7 @@ class ContactData extends Component {
             userId,
             orderData: formData,
         };
-        console.log(order);
+
         onOrderBurger(order);
     }
 

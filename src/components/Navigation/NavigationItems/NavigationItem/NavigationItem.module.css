@@ -6,7 +6,7 @@
 }
 
 .NavigationItem a {
-    columns: #8f5c2c;;
+    color: #8f5c2c;
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
