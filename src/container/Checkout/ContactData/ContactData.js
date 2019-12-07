@@ -7,6 +7,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from '../../../store/actions';
+import { updateObject, checkValidity } from '../../../shared/utility';
 
 class ContactData extends Component {
     state = {
@@ -125,13 +126,15 @@ class ContactData extends Component {
 
     inputChangedHandler = (event, inputIdentifier) => {
         const { orderForm } = this.state;
-        const updatedOrderForm = { ...orderForm };
-        const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
-        updatedFormElement.value = event.target.value;
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;
+        const updatedFormElement = updateObject(orderForm[inputIdentifier], {
+            value: event.target.value,
+            valid: checkValidity(event.target.value, orderForm[inputIdentifier].validation),
+            touched: true,
+        });
+        const updatedOrderForm = updateObject(orderForm, {
+            [inputIdentifier]: updatedFormElement,
+        });
         const invalidForm = Object.keys(orderForm).some((key) => (orderForm[key].valid === undefined ? false : !orderForm[key].valid));
-        updatedOrderForm[inputIdentifier] = updatedFormElement;
         this.setState({ orderForm: updatedOrderForm, invalidForm });
     }
 
@@ -148,17 +151,6 @@ class ContactData extends Component {
         if (loading) { form = <Spinner />; }
 
         return form;
-    }
-
-    checkValidity(value, rules) {
-        let isValid = true;
-        if (rules) {
-            if (rules.required) {
-                isValid = value.trim() !== '' && isValid;
-            }
-        }
-
-        return isValid;
     }
 
     createInputs() {
